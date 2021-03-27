@@ -9,13 +9,12 @@ function setup() {
 
 function makePageForEpisodes(episodesAll) {
   const rootElem = document.getElementById("root");
-
-  //update rootElem
+  //Show all episodes in rootElem
   rootElem.innerHTML = "";
   episodesAll.forEach((episode) => {
     rootElem.appendChild(card(episode));
   });
-  //Search
+  //#region  Search
   const search = document.createElement("input");
   search.setAttribute("type", "text");
   const stats = document.createElement("p");
@@ -23,6 +22,7 @@ function makePageForEpisodes(episodesAll) {
 
   let inputRegEx = new RegExp("", "ig");
   search.addEventListener("keyup", () => {
+    select.value = "-1";
     inputRegEx = new RegExp(search.value, "ig");
     //update rootElem
     rootElem.innerHTML = "";
@@ -34,14 +34,49 @@ function makePageForEpisodes(episodesAll) {
       rootElem.appendChild(card(episode));
     });
   });
+  //#endregion
+
+  //#region Select
+  const select = document.createElement("select");
+  select.id = "episodes";
+  select.onchange = function () {
+    console.log("hello");
+  };
+  const optionAll = document.createElement("option");
+  optionAll.value = "-1";
+  optionAll.innerText = "All Episodes : Select One";
+  select.appendChild(optionAll);
+
+  episodesAll.forEach(({ season, number, name }, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    let text =
+      "S" +
+      season.toString().padStart(2, "0") +
+      "E" +
+      number.toString().padStart(2, "0") +
+      " - " +
+      name;
+    option.text = text;
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", () => {
+    search.value = "";
+    if (parseInt(select.value) === -1) {
+      rootElem.innerHTML = "";
+      episodesAll.forEach((episode) => {
+        rootElem.appendChild(card(episode));
+      });
+    } else {
+      rootElem.innerHTML = "";
+      rootElem.appendChild(card(episodesAll[select.value]));
+    }
+  });
+  //#endregion
   document.body.insertBefore(search, rootElem);
   document.body.insertBefore(stats, rootElem);
-
-  //   .filter(({ name }) => {
-  //   inputRegEx.test(name);
-  // })
-
-  //Create a Card for each Episode Object in episodesAll Array
+  document.body.insertBefore(select, rootElem);
 }
 
 function card({ name, season, number, summary, image }) {
