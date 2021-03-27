@@ -1,7 +1,19 @@
 //You can edit ALL of the code here
 function setup() {
   //const allEpisodes = getAllEpisodes();
-  fetch("https://api.tvmaze.com/shows/82/episodes")
+  const apis = [
+    "https://api.tvmaze.com/shows/82/episodes",
+    "https://api.tvmaze.com/shows/527/episodes",
+    "https://api.tvmaze.com/shows/22036/episodes",
+    "https://api.tvmaze.com/shows/5/episodes",
+    "https://api.tvmaze.com/shows/582/episodes",
+    "https://api.tvmaze.com/shows/179/episodes",
+    "https://api.tvmaze.com/shows/379/episodes",
+    "https://api.tvmaze.com/shows/4729/episodes",
+  ];
+  const randomIndex = Math.floor(Math.random() * apis.length);
+  const selectedApi = apis[randomIndex];
+  fetch(selectedApi)
     .then((response) => response.json())
     .then((data) => makePageForEpisodes(data));
   //makePageForEpisodes(allEpisodes);
