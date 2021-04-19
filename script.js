@@ -19,22 +19,21 @@ function setup() {
     get shows() {
       return getAllShows();
     },
-    // get filteredShows() {
-    //   if(!this._filteredShows){
-    //     this._filteredShows = this.show;
-    //   }
-    //   return this._filteredShows;
-    // },
-    // set filteredShows(value) {
-    //   this._filteredShows = value;
-    // },
+    get filteredShows() {
+      if (!this._filteredShows) {
+        this._filteredShows = this.show;
+      }
+      return this._filteredShows;
+    },
+    set filteredShows(value) {
+      this._filteredShows = value;
+    },
     set episodes(value) {
       this._episodes = value;
       document.getElementById("search").value = "";
       renderSelectEpisode();
       renderStats();
       renderMainEpisodes();
-      //TODO: renderMainContent();
     },
     get episodes() {
       return this._episodes;
@@ -49,16 +48,7 @@ function setup() {
       }
       return this._filteredEpisodes;
     },
-    // set selectedShow(value) {
-    //   const select = document.getElementById("select-show");
-    //   select.value = value;
-    // },
-    // get selectedShow() {
-    //   const select = document.getElementById("select-show");
-    //   return select.value;
-    // },
     set searchRegEx(value) {
-      //this._searchRegEx = new RegExp(value, "ig");
       if (this.selectedShowId === "-1") {
         renderMainShows();
       } else {
@@ -109,7 +99,6 @@ function render() {
     global.rootElem.innerHTML = "No Page";
   }
 }
-
 function pageMain() {
   global.rootElem.innerHTML = "";
   navBar();
@@ -125,6 +114,10 @@ function navBar() {
   const selectShow = document.createElement("select");
   selectShow.id = "select-show";
   navbar.appendChild(selectShow);
+  selectShow.addEventListener("change", () => {
+    global.selectedShowId = document.getElementById("select-show").value;
+    console.log(global.selectedShowId); //Delete BR
+  });
   renderSelectShow();
   //#endregion
   //#region  create select episode
@@ -132,6 +125,9 @@ function navBar() {
   selectEpisode.id = "select-episode";
   navbar.appendChild(selectEpisode);
   renderSelectEpisode();
+  selectEpisode.addEventListener("change", () => {
+    global.selectedEpisodeId = document.getElementById("select-episode").value;
+  });
   //#endregion
   //#region  create search
   const search = document.createElement("input");
@@ -149,7 +145,6 @@ function navBar() {
   renderStats();
   //#endregion
 }
-
 function renderSelectShow() {
   const select = document.getElementById("select-show");
   if (!select) return;
@@ -167,10 +162,6 @@ function renderSelectShow() {
       select.appendChild(option);
     });
   }
-  select.addEventListener("change", () => {
-    global.selectedShowId = document.getElementById("select-show").value;
-    console.log(global.selectedShowId); //Delete BR
-  });
 }
 function renderSelectEpisode() {
   const select = document.getElementById("select-episode");
@@ -203,20 +194,6 @@ function renderSelectEpisode() {
       });
     }
   }
-
-  select.addEventListener("change", () => {
-    //search.value = ""; // Add this to set selectedEpisodesId
-    // if (parseInt(select.value) === -1) {
-    //   contentContainer.innerHTML = "";
-    //   episodes.forEach((episode) => {
-    //     contentContainer.appendChild(card(episode));
-    //   });
-    // } else {
-    //   contentContainer.innerHTML = "";
-    //   contentContainer.appendChild(card(episodes[select.value]));
-    // }
-    global.selectedEpisodeId = document.getElementById("select-episode").value;
-  });
 }
 function renderStats() {
   const stats = document.getElementById("stats");
@@ -241,7 +218,6 @@ function fetchEpisodes() {
     })
     .catch((err) => console.log(err));
 }
-
 function mainContent() {
   const container = document.createElement("div");
   container.id = "content-container";
@@ -252,80 +228,23 @@ function mainContent() {
     renderMainEpisodes();
   }
 }
-
 function renderMainShows() {
   const main = document.getElementById("content-container");
   if (!main) return;
   main.innerHTML = "";
-  global.shows.forEach((show) => {
-    main.appendChild(showCard(show));
-  });
-}
-
-function renderMainEpisodes() {
-  const main = document.getElementById("content-container");
-  if (!main) return;
-  main.innerHTML = "";
-  if (global.episodes) {
-    const filteredEpisodes = global.episodes.filter((episode) => {
-      if (global.selectedEpisodeId === "-1") {
-        return true;
-      } else if (global.selectedEpisodeId === episode.id.toString()) {
-        return true;
-      } else {
-        return false;
-      }
+  if (global.shows) {
+    const filteredShows = global.shows.filter((show) => {
+      return (
+        global.searchRegEx.test(show.name) ||
+        global.searchRegEx.test(show.summary)
+      );
     });
-    filteredEpisodes.forEach((episode) => {
-      main.appendChild(episodeCard(episode));
+    global.filteredShows = filteredShows;
+    filteredShows.forEach((show) => {
+      main.appendChild(showCard(show));
     });
   }
 }
-
-// function renderEpisodesList() {
-//   const episodes = global.episodes;
-//   document.getElementsByClassName("contentContainer")[0]?.remove();
-//   const contentContainer = document.createElement("div");
-//   contentContainer.className = "contentContainer";
-
-//   let regExp = global.searchRegEx;
-//   let episodesFiltered = episodes.filter((episode) => {
-//     return regExp.test(episode.name) || regExp.test(episode.summary);
-//   });
-//   episodesFiltered.forEach((episode) => {
-//     contentContainer.appendChild(card(episode));
-//   });
-
-//   return contentContainer;
-// }
-
-function episodeCard({ name, season, number, summary, image }) {
-  const card = document.createElement("div");
-  card.className = "episode-card";
-
-  const headerText = document.createElement("h5");
-  let text =
-    name +
-    " - S" +
-    season.toString().padStart(2, "0") +
-    "E" +
-    number.toString().padStart(2, "0");
-  headerText.innerHTML = text;
-  headerText.className = "card-header";
-  card.appendChild(headerText);
-
-  const img = document.createElement("img");
-  img.src = image?.medium;
-  img.className = "card-image";
-  card.appendChild(img);
-
-  const summaryText = document.createElement("p");
-  summaryText.innerHTML = summary;
-  summaryText.className = "card-summary";
-  card.appendChild(summaryText);
-  return card;
-}
-
 function showCard({
   id,
   name,
@@ -367,6 +286,54 @@ function showCard({
 
   content.append(poster, summaryText, details);
   card.append(header, content);
+  return card;
+}
+function renderMainEpisodes() {
+  const main = document.getElementById("content-container");
+  if (!main) return;
+  main.innerHTML = "";
+  if (global.episodes) {
+    const filteredEpisodes = global.episodes.filter((episode) => {
+      if (global.selectedEpisodeId === "-1") {
+        return (
+          global.searchRegEx.test(episode.name) ||
+          global.searchRegEx.test(episode.summary)
+        );
+      } else if (global.selectedEpisodeId === episode.id.toString()) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    filteredEpisodes.forEach((episode) => {
+      main.appendChild(episodeCard(episode));
+    });
+  }
+}
+function episodeCard({ name, season, number, summary, image }) {
+  const card = document.createElement("div");
+  card.className = "episode-card";
+
+  const headerText = document.createElement("h5");
+  let text =
+    name +
+    " - S" +
+    season.toString().padStart(2, "0") +
+    "E" +
+    number.toString().padStart(2, "0");
+  headerText.innerHTML = text;
+  headerText.className = "card-header";
+  card.appendChild(headerText);
+
+  const img = document.createElement("img");
+  img.src = image?.medium;
+  img.className = "card-image";
+  card.appendChild(img);
+
+  const summaryText = document.createElement("p");
+  summaryText.innerHTML = summary;
+  summaryText.className = "card-summary";
+  card.appendChild(summaryText);
   return card;
 }
 
