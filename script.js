@@ -199,7 +199,8 @@ function renderStats() {
   const stats = document.getElementById("stats");
   if (!stats) return;
   if (global.episodes) {
-    stats.innerText = `Displaying ${global.episodes.length} / ${global.episodes.length} episodes`;
+    //TODO: filteredShow Episodes
+    stats.innerText = `Displaying ${global.filteredEpisodes.length} / ${global.episodes.length} episodes`;
   } else {
     stats.innerText = `Displaying ${global.shows.length} / ${global.shows.length} shows`;
   }
@@ -293,7 +294,7 @@ function renderMainEpisodes() {
   if (!main) return;
   main.innerHTML = "";
   if (global.episodes) {
-    const filteredEpisodes = global.episodes.filter((episode) => {
+    global.filteredEpisodes = global.episodes.filter((episode) => {
       if (global.selectedEpisodeId === "-1") {
         return (
           global.searchRegEx.test(episode.name) ||
@@ -305,7 +306,8 @@ function renderMainEpisodes() {
         return false;
       }
     });
-    filteredEpisodes.forEach((episode) => {
+    
+    global.filteredEpisodes.forEach((episode) => {
       main.appendChild(episodeCard(episode));
     });
   }
