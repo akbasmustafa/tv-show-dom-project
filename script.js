@@ -114,6 +114,7 @@ function navBar() {
   //#region  create select show
   const selectShow = document.createElement("select");
   selectShow.id = "select-show";
+  selectShow.className = "col-12 col-md-6 col-lg-3";
   navbar.appendChild(selectShow);
   selectShow.addEventListener("change", () => {
     global.selectedShowId = document.getElementById("select-show").value;
@@ -124,6 +125,7 @@ function navBar() {
   //#region  create select episode
   const selectEpisode = document.createElement("select");
   selectEpisode.id = "select-episode";
+  selectEpisode.className = "col-12 col-md-6 col-lg-3";
   navbar.appendChild(selectEpisode);
   renderSelectEpisode();
   selectEpisode.addEventListener("change", () => {
@@ -135,6 +137,7 @@ function navBar() {
   search.setAttribute("type", "text");
   search.id = "search";
   search.placeholder = "Search";
+  search.className = "col-12 col-md-6 col-lg-3";
   navbar.appendChild(search);
   search.addEventListener("keyup", () => {
     global.searchRegEx = search.value;
@@ -143,6 +146,7 @@ function navBar() {
   //#region  create stats
   const stats = document.createElement("p");
   stats.id = "stats";
+  stats.className = "col-12 col-md-6 col-lg-3";
   navbar.appendChild(stats);
   renderStats();
   //#endregion
