@@ -1,3 +1,68 @@
 #root {
-  color: red;
+}
+
+#content-container {
+  background-color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#stats{
+  margin:0px;
+  border:2px solid rgb(243, 230, 230);
+}
+.episode-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  margin: 1%;
+  padding: 1%;
+  background-color: whitesmoke;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.7);
+}
+.card-header {
+  border-radius: 5px;
+  width: 100%;
+  padding: 2%;
+  text-align: center;
+  margin:1%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.7);
+
+}
+.show-card {
+  background-color: whitesmoke;
+  margin:4%;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.7);
+  transition: all 0.3s ease;
+}
+.show-card:hover{
+  transform: scale(1.03);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+.show-card p{
+  padding: 2%;
+}
+.show-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items:flex-start;
+}
+
+.navbar {
+  background-color:#536162;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  flex-wrap: wrap;
+  padding: 3%;
+}
+
+.card-image {
+  padding: 5%;
+}
+
+.card-summary {
 }
