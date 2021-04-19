@@ -21,12 +21,13 @@ function setup() {
     },
     get filteredShows() {
       if (!this._filteredShows) {
-        this._filteredShows = this.show;
+        this._filteredShows = this.shows;
       }
       return this._filteredShows;
     },
     set filteredShows(value) {
       this._filteredShows = value;
+      renderStats();
     },
     set episodes(value) {
       this._episodes = value;
@@ -199,10 +200,9 @@ function renderStats() {
   const stats = document.getElementById("stats");
   if (!stats) return;
   if (global.episodes) {
-    //TODO: filteredShow Episodes
     stats.innerText = `Displaying ${global.filteredEpisodes.length} / ${global.episodes.length} episodes`;
   } else {
-    stats.innerText = `Displaying ${global.shows.length} / ${global.shows.length} shows`;
+    stats.innerText = `Displaying ${global.filteredShows.length} / ${global.shows.length} shows`;
   }
 }
 
@@ -234,14 +234,13 @@ function renderMainShows() {
   if (!main) return;
   main.innerHTML = "";
   if (global.shows) {
-    const filteredShows = global.shows.filter((show) => {
+    global.filteredShows = global.shows.filter((show) => {
       return (
         global.searchRegEx.test(show.name) ||
         global.searchRegEx.test(show.summary)
       );
     });
-    global.filteredShows = filteredShows;
-    filteredShows.forEach((show) => {
+    global.filteredShows.forEach((show) => {
       main.appendChild(showCard(show));
     });
   }
@@ -306,7 +305,7 @@ function renderMainEpisodes() {
         return false;
       }
     });
-    
+
     global.filteredEpisodes.forEach((episode) => {
       main.appendChild(episodeCard(episode));
     });
