@@ -17,39 +17,46 @@
   width: 250px;
   margin: 10px;
   padding: 2%;
-  background-color: white;
+  background-color: whitesmoke;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.7);
+}
+.card-header {
+  border: 1px gray solid;
+  border-radius: 5px;
+  width: 100%;
+  padding: 2%;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2%;
 }
 .show-card {
-  background-color: white;
-  margin:1%;
-  border:1px solid whitesmoke;
+  background-color: whitesmoke;
+  margin:4%;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.7);
+  transition: all 0.3s ease;
+}
+.show-card:hover{
+  transform: scale(1.03);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+.show-card p{
+  padding: 2%;
 }
 .show-content{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items:flex-start;
-
-
-}
-.card-header {
-  border: 1px gray solid;
-  border-radius: 5px;
-  min-height: 10%;
-  width: 100%;
-  padding-left: 2%;
-  padding-right: 2%;
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 2%;
 }
 
 .navbar {
-  background-color: whitesmoke;
+  background-color:#536162;
   display: flex;
   justify-content: space-around;
   align-items: stretch;
   flex-wrap: wrap;
+  padding: 3%;
 }
 
 .card-image {

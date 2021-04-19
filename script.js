@@ -134,6 +134,7 @@ function navBar() {
   const search = document.createElement("input");
   search.setAttribute("type", "text");
   search.id = "search";
+  search.placeholder = "Search";
   navbar.appendChild(search);
   search.addEventListener("keyup", () => {
     global.searchRegEx = search.value;
